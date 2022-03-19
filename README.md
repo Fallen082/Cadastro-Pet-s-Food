@@ -8,4 +8,8 @@ DE PREFERENCIA A PASTA DO ONE DRIVE NO WINDOWNS PARA SALVAR NA NUVEM
 
 depois so criar um executavel com o código APP.py
 
+Este Link abaixo  mostra melhor com tornar um executavel 
+
+https://www.youtube.com/watch?v=LPcz0HNVx2M
+
 FIM!
