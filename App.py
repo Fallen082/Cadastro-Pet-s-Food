@@ -644,42 +644,196 @@ def Tela_Filtrar():
                               fg="#000000", font="Cambria 15 bold", relief='sunken')
             Valor_reg.grid(row=0, column=8, pady=5)
 
+    def Filtro_Mes():
+        # Comando SQLITE
+        mes = box.get()
+
+        if mes == "Janeiro":
+            mes = "01"
+        elif mes == "Fevereiro":
+            mes = "02"
+        elif mes == "Março":
+            mes = "03"
+        elif mes == "Abril":
+            mes = "04"
+        elif mes == "Maio":
+            mes = "05"
+        elif mes == "Junho":
+            mes = "06"
+        elif mes == "Julho":
+            mes = "07"
+        elif mes == "Agosto":
+            mes = "08"
+        elif mes == "Setembro":
+            mes = "09"
+        elif mes == "Outubro":
+            mes = "10"
+        elif mes == "Novembro":
+            mes = "11"
+        elif mes == "Dezembro":
+            mes = "12"
+
+        dados = f"SELECT * FROM Clientes_Pet"
+        if mes == '':
+            messagebox.showerror("MÊS INVALIDO", "Para Prosseguir Selecione Algum Mês Válido")
+            tela_filtro.destroy()
+        else:
+            # Congigurações janela
+            janela_registros = Toplevel()
+            janela_registros.title(f'Registros Mês {mes}')
+            janela_registros.geometry('692x365+350+150')
+            janela_registros.resizable(False, False)
+            janela_registros.iconbitmap('Icone_barra.ico')
+            janela_registros.configure(bg="#999999")
+            janela_registros.grab_set()
+
+            # Definindo Tema Treeview
+            tema = ttk.Style()
+            tema.theme_use('alt')
+            tema.configure("Treeview", background="#fcd4d2", fieldbackground="#fcd4d2")
+
+            # Tree view
+            arvore = ttk.Treeview(janela_registros, selectmode='browse', height=13,
+                                  columns=('d', 'n', 'num', 'p', 's', 'v', 'obs', 'hrs'), show='headings')
+
+            arvore.column('d', width=75, stretch=YES)
+            arvore.heading("#1", text="Data", anchor=CENTER)
+
+            arvore.column('n', width=90, stretch=YES)
+            arvore.heading("#2", text="Nome", anchor=CENTER)
+
+            arvore.column('num', width=92, stretch=YES)
+            arvore.heading("#3", text="Telefone", anchor=CENTER)
+
+            arvore.column('p', width=80, stretch=YES)
+            arvore.heading("#4", text="Pet", anchor=CENTER)
+
+            arvore.column('s', width=90, stretch=YES)
+            arvore.heading("#5", text="Serviço")
+
+            arvore.column('v', width=60, stretch=YES)
+            arvore.heading("#6", text="Valor", anchor=CENTER)
+
+            arvore.column('obs', width=130, stretch=YES)
+            arvore.heading("#7", text="Observação", anchor=CENTER)
+
+            arvore.column('hrs', width=43, stretch=YES)
+            arvore.heading("#8", text="Hora")
+
+            arvore.grid(row=1, column=1, columnspan=10, padx=5, pady=5)
+
+            sroll_bar = ttk.Scrollbar(janela_registros, orient='vertical', command=arvore.yview)
+            arvore.configure(yscrollcommand=sroll_bar.set(1, 1))
+            sroll_bar.grid(row=1, column=11, sticky='ns')
+
+            for dado in Cursor.execute(dados):
+                data = dado[0]
+                if data[3:5] == mes:
+                    arvore.insert('', END, values=dado)
+
+            def Botao_Valor_Total():
+                tot = 0
+                dogs = 0
+                for valor in Cursor.execute(dados):
+                    price = dado[0]
+                    if price[3:5] == mes:
+                        if valor[5].isnumeric():
+                            acrescentar = int(valor[5])
+                            tot += acrescentar
+                        dogs += 1
+                    value = f'{tot:.2f} R$'
+                    Quantidade['text'] = dogs
+                    Valor_reg['text'] = value
+
+            def deletar_comand():
+                try:
+                    itens1 = arvore.selection()[0]
+                    item = arvore.item(itens1, 'values')
+                    arvore.delete(itens1)
+                    delete = f"DELETE FROM Clientes_PET WHERE Data = '{item[0]}' " \
+                             f"AND Nome = '{item[1]}' AND Pet = '{item[3]}'"
+                    Cursor.execute(delete)
+                    banco.commit()
+
+                except:
+                    pass
+
+            Deletar = Button(janela_registros,
+                             text="DELETAR", bg="#e6151f",
+                             bd=7, width=13, height=2,
+                             relief='raised', font="Ubuntu 11 bold",
+                             command=deletar_comand)
+            Deletar.grid(row=0, column=1, pady=5)
+
+            Quantidade = Label(janela_registros,
+                               text='    ', bg="#d0d1cf", bd=8,
+                               fg="#000000", font="Cambria 15 bold", relief='sunken')
+            Quantidade.grid(row=0, column=6, pady=5)
+
+            Valor_total = Button(janela_registros,
+                                 text="Quantidade e Valor", bg="#53c9c9",
+                                 bd=7, width=18, height=2,
+                                 relief='raised', font="Ubuntu 9 bold",
+                                 command=Botao_Valor_Total)
+            Valor_total.grid(row=0, column=3, pady=5, padx=20)
+
+            Valor_reg = Label(janela_registros,
+                              text='                       ', bg="#d0d1cf", bd=8,
+                              fg="#000000", font="Cambria 15 bold", relief='sunken')
+            Valor_reg.grid(row=0, column=8, pady=5)
+
+            janela_registros.mainloop()
+
     Nome_Botao = Button(tela_filtro,
                         text="Nome", bg="#088A08",
                         bd=7, width=19, height=2,
                         relief='groove', font="Ubuntu 11 bold",
                         command=Filtro_Nome, anchor=CENTER)
-    Nome_Botao.grid(row=0, padx=15, pady=5)
+    Nome_Botao.grid(row=0, column=0, columnspan=2, padx=15, pady=5)
 
     Nome_search = Entry(tela_filtro, width=15, bg="#d0d1cf", bd=7, fg="#191970",
                         relief="sunken", font="Cambria 15 bold")
 
-    Nome_search.grid(row=1)
+    Nome_search.grid(row=1, column=0, columnspan=2)
 
     Pet_Botao = Button(tela_filtro,
                        text="Pet", bg="#088A08",
                        bd=7, width=19, height=2,
                        relief='groove', font="Ubuntu 11 bold",
                        command=Filtro_Pet, anchor=CENTER)
-    Pet_Botao.grid(row=2, padx=4, pady=5)
+    Pet_Botao.grid(row=2, column=0, columnspan=2, padx=4, pady=5)
 
     Pet_search = Entry(tela_filtro, width=15, bg="#d0d1cf", bd=6, fg="#191970",
                        relief="sunken", font="Cambria 15 bold")
-    Pet_search.grid(row=3)
+    Pet_search.grid(row=3, column=0, columnspan=2)
 
     Data_Botao = Button(tela_filtro,
                         text="Data", bg="#088A08",
-                        bd=7, width=19, height=2,
+                        bd=7, width=8, height=2,
                         relief='groove', font="Ubuntu 11 bold",
                         command=Filtro_Data, anchor=CENTER)
-    Data_Botao.grid(row=4, padx=4, pady=5)
+    Data_Botao.grid(row=4, column=0, padx=2, pady=5)
 
-    Data_search = Entry(tela_filtro, width=15, bg="#d0d1cf", bd=7, fg="#191970",
+    Data_search = Entry(tela_filtro, width=5, bg="#d0d1cf", bd=5, fg="#191970",
                         relief="sunken", font="Cambria 15 bold")
-    Data_search.grid(row=5)
+    Data_search.grid(row=5, column=0)
+
+    Mes_Botao = Button(tela_filtro,
+                       text="|Mês|", bg="#088A08",
+                       bd=7, width=8, height=2,
+                       relief='groove', font="Ubuntu 11 bold",
+                       command=Filtro_Mes, anchor=CENTER)
+    Mes_Botao.grid(row=4, column=1, padx=4, pady=5)
+
+    box = ttk.Combobox(tela_filtro, width=12, height=6, values=["Janeiro", "Fevereiro", "Março",
+                                                                "Abril", "Maio", "Junho",
+                                                                "Julho", "Agosto", "Setembro",
+                                                                "Outubro", "Nobembro", "Dezembro"])
+    box.current(int(strftime("%m", gmtime())) - 1)
+    box.grid(row=5, column=1, padx=1, pady=5)
 
     autor = Label(tela_filtro, text='Author: F4llen082', font="Arial 7 bold", bg="#141313", fg="#F8F8FF")
-    autor.grid(row=6, pady=6)
+    autor.grid(row=6, column=0, pady=6, columnspan=2)
 
     tela_filtro.mainloop()
 
@@ -687,8 +841,8 @@ def Tela_Filtrar():
 Tela_Init()
 
 # Local Onde Está O Arquivo
-arquivo = "Local Onde esta o Banco de dados"
+arquivo = "Local Onde Está o Arquivo"
 
 # Local Onde será enviado
-destino = "Pasta One Drive onde será enviada"
+destino = "Pasta one drive para onde será enviada"
 shutil.copy(arquivo, destino)
