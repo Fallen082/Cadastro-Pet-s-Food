@@ -37,8 +37,8 @@ Na Marca de **7:00** Ele Mostra como Usar o Pip para installar o **PyInstaller**
 ---
 
 
-![Tela_Init](https://user-images.githubusercontent.com/82683646/160216700-50bf90e9-9e37-43a1-9df6-2c8716b242e7.png)____
-![Tela_Cadastro](https://user-images.githubusercontent.com/82683646/160216704-e8a69608-ca40-436d-86b9-b757b08f409a.png)____
+![Tela_Init](https://user-images.githubusercontent.com/82683646/160216700-50bf90e9-9e37-43a1-9df6-2c8716b242e7.png)_
+![Tela_Cadastro](https://user-images.githubusercontent.com/82683646/160216704-e8a69608-ca40-436d-86b9-b757b08f409a.png)_
 ![Tela_Filtrar](https://user-images.githubusercontent.com/82683646/160216711-5117f1e0-5903-41ba-9f66-1df681f2f130.png)
 ___________![Tela_Registros](https://user-images.githubusercontent.com/82683646/160216712-ddfe926a-3de0-4259-818f-c242fa41362d.png)
 
