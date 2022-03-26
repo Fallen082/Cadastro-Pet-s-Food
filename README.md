@@ -1,7 +1,7 @@
 # Cadastro Banho e Tosa Pet's Food
 ---
 Este é um **_Simples Sistema De Cadastro_** feito para o meu local de trabalho utilizando : **Python** e **SQLite**
-Realiando Backup Utilizando o **One Drive** do proprio **Windowns 10** 😄 🎆
+Realizando Backup Utilizando o **One Drive** do proprio **Windowns 10** 😄 🎆
 
 Lista de Tarefas:
 
