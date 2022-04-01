@@ -735,7 +735,7 @@ def Tela_Filtrar():
                 tot = 0
                 dogs = 0
                 for valor in Cursor.execute(dados):
-                    price = dado[0]
+                    price = valor[0]
                     if price[3:5] == mes:
                         if valor[5].isnumeric():
                             acrescentar = int(valor[5])
